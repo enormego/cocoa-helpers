@@ -16,4 +16,9 @@
  */
 - (BOOL)containsObjectForKey:(id)key;
 
+/*
+ * Checks to see if the dictionary is empty
+ */
+@property(nonatomic,readonly,getter=isEmpty) BOOL empty;
+
 @end

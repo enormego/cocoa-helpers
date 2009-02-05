@@ -12,7 +12,7 @@
 @interface UIDevice (Helper)
 
 /*
- * Available memory in MB 
+ * Available device memory in MB 
  */
 @property(readonly) double availableMemory;
 
