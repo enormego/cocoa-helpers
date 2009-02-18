@@ -7,6 +7,7 @@
 //
 
 #import "UIImageHelper.h"
+#import <CoreGraphics/CoreGraphics.h>
 
 
 @implementation UIImage (Helper)
@@ -17,7 +18,7 @@
 	if(error || !data) {
 		return nil;
 	} else {
-		return [UIImage imageWithData:request.receivedData];
+		return [UIImage imageWithData:data];
 	}
 }
 
@@ -47,7 +48,7 @@
 			}
 		} else {
 			return [self scaleHeightAndCropWidthToSize:size];
-		}		
+		}    
 	} else {
 		if(self.size.width > self.size.height) {
 			if((self.size.height / self.size.width) >= (size.height / size.width)) {
@@ -57,7 +58,7 @@
 			}
 		} else {
 			return [self scaleWidthAndCropHeightToSize:size];
-		}		
+		}    
 	}
 }
 
@@ -84,7 +85,7 @@
 	croppedRect.size = size;
 	croppedRect.origin = CGPointZero;
 	
-	CGContextCropToRect(context, croppedRect);
+	CGContextClipToRect(context, croppedRect);
 	
 	CGRect drawRect;
 	drawRect.origin = offset;
