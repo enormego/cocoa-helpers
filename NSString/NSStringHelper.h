@@ -18,6 +18,12 @@
  */
 #define LocalizedStringWithFormat(s,...) [NSString stringWithFormat:NSLocalizedString(s,s),##__VA_ARGS__]
 
+enum {
+	NSTruncateStringPositionStart=0,
+	NSTruncateStringPositionMiddle,
+	NSTruncateStringPositionEnd
+}; typedef int NSTruncateStringPosition;
+
 @interface NSString (Helper)
 
 /*
@@ -34,5 +40,18 @@
  * Returns the MD5 value of the string
  */
 - (NSString*)md5;
+
+/*
+ * Returns the long value of the string
+ */
+- (long)longValue;
+- (long long)longLongValue;
+
+/*
+ * Truncate string to length
+ */
+- (NSString*)stringByTruncatingToLength:(int)length;
+- (NSString*)stringByTruncatingToLength:(int)length direction:(NSTruncateStringPosition)truncateFrom;
+- (NSString*)stringByTruncatingToLength:(int)length direction:(NSTruncateStringPosition)truncateFrom withEllipsisString:(NSString*)ellipsis;
 
 @end
