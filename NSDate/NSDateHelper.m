@@ -309,4 +309,8 @@
 	}	
 }
 
+- (NSDate*)midnightDate {
+	return [[NSCalendar currentCalendar] dateFromComponents:[[NSCalendar currentCalendar] components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit) fromDate:self]];
+}
+
 @end

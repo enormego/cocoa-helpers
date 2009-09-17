@@ -6,7 +6,7 @@
 //  Copyright 2008 enormego. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
 
 /* 
  * Short hand NSLocalizedString, doesn't need 2 parameters

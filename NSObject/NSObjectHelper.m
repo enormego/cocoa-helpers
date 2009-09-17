@@ -114,7 +114,7 @@ void replaceMethod(Class toClass, Class fromClass, SEL aSelector) {
 }
 
 + (void)appendMethod:(SEL)newMethod fromClass:(Class)aClass {
-	appendMethod([self class], aClass, selector);	
+	appendMethod([self class], aClass, newMethod);	
 }
 
 + (void)replaceMethod:(SEL)aMethod fromClass:(Class)aClass {

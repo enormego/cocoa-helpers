@@ -61,4 +61,8 @@
 
 // Checks whether current date is past date
 - (BOOL)isPastDate;
+
+// Returns the current date, at midnight
+- (NSDate*)midnightDate;
+
 @end
