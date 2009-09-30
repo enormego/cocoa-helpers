@@ -6,6 +6,7 @@
 //  Copyright enormego 2009. All rights reserved.
 //
 
+#if TARGET_OS_IPHONE
 #import <UIKit/UIKit.h>
 
 @interface UIViewController (Helper)
@@ -20,3 +21,4 @@
 - (void)dismissPopUpViewController:(UIViewController*)viewController;
 
 @end
+#endif

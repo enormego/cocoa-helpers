@@ -1,11 +1,12 @@
 //
 //  UIImageHelper.h
-//  CocoaHelpers
+//  Enormego Cocoa Helpers
 //
 //  Created by Shaun Harrison on 12/19/08.
-//  Copyright 2008 enormego. All rights reserved.
+//  Copyright 2008-2009 enormego. All rights reserved.
 //
 
+#if TARGET_OS_IPHONE
 #import <UIKit/UIKit.h>
 
 
@@ -54,3 +55,4 @@
 - (UIImage*)scaleToSize:(CGSize)size withOffset:(CGPoint)offset;	
 
 @end
+#endif

@@ -1,9 +1,9 @@
 //
 //  NSDictionaryHelper.h
-//  CocoaHelpers
+//  Enormego Cocoa Helpers
 //
 //  Created by Shaun Harrison on 10/29/08.
-//  Copyright 2008 enormego. All rights reserved.
+//  Copyright 2008-2009 enormego. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

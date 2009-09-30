@@ -6,6 +6,7 @@
 //  Copyright 2009 enormego. All rights reserved.
 //
 
+#if TARGET_OS_IPHONE
 #import <UIKit/UIKit.h>
 
 // Used by the UITableView helper, not intended for public use
@@ -19,3 +20,4 @@
 - (id)initWithFrame:(CGRect)frame title:(NSString*)title;
 
 @end
+#endif

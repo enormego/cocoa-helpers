@@ -6,8 +6,8 @@
 //  Copyright 2009 enormego. All rights reserved.
 //
 
+#if TARGET_OS_IPHONE
 #import "UITableViewControllerHelper.h"
-
 
 @implementation UITableViewController (Helper)
 
@@ -52,3 +52,4 @@
 }
 
 @end
+#endif

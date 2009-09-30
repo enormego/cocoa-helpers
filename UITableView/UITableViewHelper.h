@@ -6,7 +6,8 @@
 //  Copyright 2009 enormego. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#if TARGET_OS_IPHONE
+#import <UIKit/UIKit.h>
 
 
 @interface UITableView (Helper)
@@ -26,3 +27,4 @@
 @protocol UITableViewContentUnavailableDataSource<NSObject>
 - (NSString*)tableViewContentUnavailableText:(UITableView*)tableView;
 @end
+#endif

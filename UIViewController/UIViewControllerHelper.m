@@ -6,6 +6,7 @@
 //  Copyright enormego 2009. All rights reserved.
 //
 
+#if TARGET_OS_IPHONE
 #import "UIViewControllerHelper.h"
 
 @interface UIViewController (Private)
@@ -74,3 +75,4 @@
 }
 
 @end
+#endif

@@ -1,11 +1,12 @@
 //
 //  UIAlertViewHelper.h
-//  CocoaHelpers
+//  Enormego Cocoa Helpers
 //
 //  Created by Shaun Harrison on 10/16/08.
-//  Copyright 2008 enormego. All rights reserved.
+//  Copyright 2008-2009 enormego. All rights reserved.
 //
 
+#if TARGET_OS_IPHONE
 #import <UIKit/UIKit.h>
 
 /*
@@ -17,3 +18,4 @@ void UIAlertViewQuick(NSString* title, NSString* message, NSString* dismissButto
 @interface UIAlertView (Helper)
 
 @end
+#endif

@@ -1,6 +1,6 @@
 //
 //  NSObjectHelper.m
-//  enormego
+//  Enormego Cocoa Helpers
 //
 //  Created by Shaun Harrison on 5/7/09.
 //  Copyright 2009 enormego. All rights reserved.
@@ -9,7 +9,7 @@
 #import "NSObjectHelper.h"
 #import </usr/include/objc/objc-class.h>
 
-// Credit: http://www.cocoadev.com/index.pl?MethodSwizzle
+// MethodSwizzle used from here: http://www.cocoadev.com/index.pl?MethodSwizzle
 BOOL MethodSwizzle(Class klass, SEL origSel, SEL altSel, BOOL forInstance) {
 	
     // Make sure the class isn't nil

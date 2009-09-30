@@ -1,20 +1,20 @@
 //
 //  UIImageHelper.m
-//  CocoaHelpers
+//  Enormego Cocoa Helpers
 //
 //  Created by Shaun Harrison on 12/19/08.
-//  Copyright 2008 enormego. All rights reserved.
+//  Copyright 2008-2009 enormego. All rights reserved.
 //
 
+#if TARGET_OS_IPHONE
 #import "UIImageHelper.h"
 #import <CoreGraphics/CoreGraphics.h>
-
 
 @implementation UIImage (Helper)
 
 + (UIImage*)imageWithContentsOfURL:(NSURL*)url {
 	NSError* error;
-	NSData* data = [NSData dataWithContentsOfURL:url options:0 error:&error];
+	NSData* data = [NSURLConnection sendSynchronousRequest:[NSURLRequest requestWithURL:url] returningResponse:NULL error:NULL];
 	if(error || !data) {
 		return nil;
 	} else {
@@ -102,3 +102,4 @@
 }
 
 @end
+#endif

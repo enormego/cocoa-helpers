@@ -6,8 +6,8 @@
 //  Copyright 2009 enormego. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
+#if TARGET_OS_IPHONE
+#import <UIKit/UIKit.h>
 
 @interface UITableViewController (Helper)
 
@@ -23,3 +23,4 @@
 // Returns an NSArray containing a single NSIndexPath
 - (NSArray*)indexPathsForRow:(NSUInteger)forRow inSection:(NSUInteger)inSection;
 @end
+#endif

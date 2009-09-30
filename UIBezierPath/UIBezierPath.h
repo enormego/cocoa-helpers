@@ -5,6 +5,7 @@
 
 #import <UIKit/UIKit.h>
 
+#if TARGET_OS_IPHONE
 typedef enum {
     kUIBezierPathTopLeftCorner = 1,
     kUIBezierPathTopRightCorner = 1 << 1,
@@ -41,3 +42,4 @@ typedef enum {
 - (void)clip;
 
 @end
+#endif

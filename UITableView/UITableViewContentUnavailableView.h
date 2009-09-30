@@ -6,6 +6,7 @@
 //  Copyright 2009 enormego. All rights reserved.
 //
 
+#if TARGET_OS_IPHONE
 #import <UIKit/UIKit.h>
 
 // Used by the UITableView helper, not intended for public use
@@ -17,3 +18,4 @@
 
 @property(nonatomic,copy) NSString* text;
 @end
+#endif

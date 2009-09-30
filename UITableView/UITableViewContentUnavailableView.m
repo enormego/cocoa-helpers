@@ -6,6 +6,7 @@
 //  Copyright 2009 enormego. All rights reserved.
 //
 
+#if TARGET_OS_IPHONE
 #import "UITableViewContentUnavailableView.h"
 
 
@@ -54,3 +55,4 @@
 
 
 @end
+#endif

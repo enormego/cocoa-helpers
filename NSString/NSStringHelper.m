@@ -3,12 +3,13 @@
 //  CocoaHelpers
 //
 //  Created by Shaun Harrison on 10/14/08.
-//  Copyright 2008 enormego. All rights reserved.
+//  Copyright 2008-2009 enormego. All rights reserved.
 //
 
 #import "NSStringHelper.h"
 #import <CommonCrypto/CommonDigest.h>
 
+int const GGCharacterIsNotADigit = 10;
 
 @implementation NSString (Helper)
 
@@ -19,6 +20,9 @@
 - (BOOL)containsString:(NSString*)string options:(NSStringCompareOptions)options {
 	return [self rangeOfString:string options:options].location == NSNotFound ? NO : YES;
 }
+
+#pragma mark -
+#pragma mark Long conversions
 
 - (long)longValue {
 	return (long)[self longLongValue];
@@ -35,11 +39,44 @@
 }
 
 /*
- * We did not write the method below
- * It's all over Google and we're unable to find the original author
- * Please contact info@enormego.com with the original author and we'll
- * Update this comment to reflect credit
+ * Contact info@enormego.com if you're the author and we'll update this comment to reflect credit
  */
+
+- (unsigned)digitValue:(unichar)c {
+	
+	if ((c>47)&&(c<58)) {
+        return (c-48);
+	}
+	
+	return GGCharacterIsNotADigit;
+}
+
+- (unsigned long long)unsignedLongLongValue {
+	unsigned n = [self length];
+	unsigned long long v,a;
+	unsigned small_a, j;
+	
+	v=0;
+	for (j=0;j<n;j++) {
+		unichar c=[self characterAtIndex:j];
+		small_a=[self digitValue:c];
+		if (small_a==GGCharacterIsNotADigit) continue;
+		a=(unsigned long long)small_a;
+		v=(10*v)+a;
+	}
+	
+	return v;
+	
+}
+
+#pragma mark -
+#pragma mark Hashes
+// TODO: Add other methods, specifically SHA1
+
+/*
+ * Contact info@enormego.com if you're the author and we'll update this comment to reflect credit
+ */
+
 - (NSString*)md5 {
 	const char* string = [self UTF8String];
 	unsigned char result[16];
@@ -51,11 +88,11 @@
 	return [hash lowercaseString];
 }
 
+#pragma mark -
+#pragma mark Truncation
+
 /*
- * Again, we did not write the methods below
- * We found them on Google a long time ago, and do not remember where
- * Please contact info@enormego.com with the original author and we'll
- * Update this comment to reflect credit
+ * Contact info@enormego.com if you're the author and we'll update this comment to reflect credit
  */
 
 - (NSString*)stringByTruncatingToLength:(int)length {

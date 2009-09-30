@@ -3,7 +3,7 @@
 //  Enormego Cocoa Helpers
 //
 //  Created by Shaun Harrison on 10/15/08.
-//  Copyright 2008 enormego. All rights reserved.
+//  Copyright 2008-2009 enormego. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -32,6 +32,8 @@
 // Returns an NSDate with an alternative RSS formatted string: 'd MMM yyyy HH:mm:ss ZZZ' string
 + (NSDate*)dateWithAltRSSDateString:(NSString*)str;
 
+// just now, 2 minutes ago, 2 hours ago, 2 days ago, etc.
+- (NSString*)formattedExactRelativeDate;
 
 // Pass in an string compatible with NSDateFormatter
 - (NSString*)formattedDateWithFormatString:(NSString*)dateFormatterString;

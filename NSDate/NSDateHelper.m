@@ -3,7 +3,7 @@
 //  Enormego Cocoa Helpers
 //
 //  Created by Shaun Harrison on 10/15/08.
-//  Copyright 2008 enormego. All rights reserved.
+//  Copyright 2008-2009 enormego. All rights reserved.
 //
 
 #import "NSDateHelper.h"
@@ -55,6 +55,46 @@
 	
 	return [[self class] dateWithString:dateString formatString:@"d MMM yyyy HH:mm:ss ZZZ"];
 }
+
+- (NSString*)formattedExactRelativeDate {
+	NSTimeInterval time = [self timeIntervalSince1970];
+	NSTimeInterval now = [[NSDate date] timeIntervalSince1970];
+	NSTimeInterval diff = now - time;
+	
+	if(diff < 10) {
+		return LocalizedString(@"just now");	
+	} else if(diff < 60) {
+		return LocalizedStringWithFormat(@"%d seconds ago", (int)diff);
+	}
+	
+	diff = round(diff/60);
+	if(diff < 60) {
+		if(diff == 1) {
+			return LocalizedStringWithFormat(@"%d minutes ago", (int)diff);
+		} else {
+			return LocalizedStringWithFormat(@"%d minute ago", (int)diff);
+		}
+	}
+	
+	diff = round(diff/60);
+	if(diff < 24) {
+		if(diff == 1) {
+			return LocalizedStringWithFormat(@"%d hours ago", (int)diff);
+		} else {
+			return LocalizedStringWithFormat(@"%d hour ago", (int)diff);
+		}
+	}
+	
+	if(diff < 7) {
+		if(diff == 1) {
+			return LocalizedString(@"yesterday");
+		} else {
+			return LocalizedStringWithFormat(@"%d days ago", (int)diff);
+		}
+	}
+	
+	return [self formattedDateWithFormatString:LocalizedString(@"MM/dd/yy")];
+}	
 
 - (NSString*)formattedDateWithFormatString:(NSString*)dateFormatterString {
 	if(!dateFormatterString) return nil;

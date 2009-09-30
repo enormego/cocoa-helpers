@@ -3,7 +3,7 @@
 //  CocoaHelpers
 //
 //  Created by Shaun Harrison on 10/14/08.
-//  Copyright 2008 enormego. All rights reserved.
+//  Copyright 2008-2009 enormego. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -46,6 +46,7 @@ enum {
  */
 - (long)longValue;
 - (long long)longLongValue;
+- (unsigned long long)unsignedLongLongValue;
 
 /*
  * Truncate string to length

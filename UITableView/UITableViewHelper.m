@@ -6,6 +6,7 @@
 //  Copyright 2009 enormego. All rights reserved.
 //
 
+#if TARGET_OS_IPHONE
 #import "UITableViewHelper.h"
 #import "UITableViewContentUnavailableView.h"
 #import "UITableViewUpdatingView.h"
@@ -104,3 +105,4 @@
 }
 
 @end
+#endif
