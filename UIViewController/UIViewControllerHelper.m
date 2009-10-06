@@ -17,18 +17,16 @@
 
 - (void)presentPopUpViewController:(UIViewController*)viewController {
 	[viewController setParentViewController:self];
-	if(self.view.bounds.size.height == [UIScreen mainScreen].bounds.size.height) {
-		if(![viewController wantsFullScreenLayout]) {
-			CGRect frame = self.view.bounds;
-			frame.origin.y = [UIApplication sharedApplication].statusBarFrame.size.height;
-			frame.size.height -= frame.origin.y;
-			viewController.view.frame = frame;
-		} else {
-			viewController.view.frame = self.view.bounds;
-		}
+
+	if(![[UIApplication sharedApplication] isStatusBarHidden]) {
+		CGRect frame = self.view.bounds;
+		frame.origin.y = [UIApplication sharedApplication].statusBarFrame.size.height;
+		frame.size.height -= frame.origin.y;
+		viewController.view.frame = frame;
 	} else {
 		viewController.view.frame = self.view.bounds;
 	}
+	
 	viewController.view.alpha = 0.0f;
 
 	[self.view addSubview:viewController.view];
