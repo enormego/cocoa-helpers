@@ -61,9 +61,19 @@
 	viewController.view.alpha = 0.0f;
 	[UIView commitAnimations];
 	
+	UINavigationController* navigationController = nil;
+	
 	if([self isKindOfClass:[UINavigationController class]]) {
-		if([((UINavigationController*)self).topViewController.view isKindOfClass:[UIScrollView class]]) {
-			((UIScrollView*)((UINavigationController*)self).topViewController.view).scrollsToTop = YES;
+		navigationController = (id)self;
+	} else if([self isKindOfClass:[UITabBarController class]]) {
+		if([[(UITabBarController*)self selectedViewController] isKindOfClass:[UINavigationController class]]) {
+			navigationController = (id)[(UITabBarController*)self selectedViewController];
+		}
+	}
+	
+	if(navigationController) {
+		if([navigationController.topViewController.view isKindOfClass:[UIScrollView class]]) {
+			((UIScrollView*)navigationController.topViewController.view).scrollsToTop = YES;
 		}
 	}
 }
