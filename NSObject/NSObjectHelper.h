@@ -6,7 +6,7 @@
 //  Copyright 2009 enormego. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 
 @interface NSObject (Helper)
 
