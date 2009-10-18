@@ -40,3 +40,5 @@ There's additional documentation and examples provided in each header file
 # Questions
 Feel free to contact info@enormego.com if you need any help with any of these methods or wish to contribute to Cocoa Helpers.
 
+# License
+This work is licensed under the Creative Commons GNU General Public License License. To view a copy of this license, visit http://creativecommons.org/licenses/GPL/2.0/ or send a letter to Creative Commons, 171 Second Street, Suite 300, San Francisco, California, 94105, USA.
