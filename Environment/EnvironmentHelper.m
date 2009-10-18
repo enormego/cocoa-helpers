@@ -27,14 +27,19 @@
 
 #else
 
++ (void)systemVersionMajor:(SInt32*)systemVersionMajor minor:(SInt32*)systemVersionMinor bugFix:(SInt32*)systemVersionBugFix {
+	Gestalt(gestaltSystemVersionMajor, &*systemVersionMajor);
+	Gestalt(gestaltSystemVersionMinor, &*systemVersionMinor);
+	Gestalt(gestaltSystemVersionBugFix, &*systemVersionBugFix);
+}
+
 + (NSString*)systemVersion  {
 	SInt32 systemVersionMajor;
 	SInt32 systemVersionMinor;
 	SInt32 systemVersionBugFix;
-	Gestalt(gestaltSystemVersionMajor, &systemVersionMajor);
-	Gestalt(gestaltSystemVersionMinor, &systemVersionMinor);
-	Gestalt(gestaltSystemVersionBugFix, &systemVersionBugFix);
-
+	
+	[self systemVersionMajor:&systemVersionMajor minor:&systemVersionMinor bugFix:&systemVersionBugFix];
+	
 	return [NSString stringWithFormat:@"%u.%u.%u", systemVersionMajor, systemVersionMinor, systemVersionBugFix];
 }
 
@@ -48,6 +53,26 @@
 
 + (BOOL)isSnowLeopard {
 	return [[self systemVersion] hasPrefix:@"10.6."];
+}
+
++ (BOOL)isAtLeastLeopard {
+	SInt32 systemVersionMajor;
+	SInt32 systemVersionMinor;
+	SInt32 systemVersionBugFix;
+	
+	[self systemVersionMajor:&systemVersionMajor minor:&systemVersionMinor bugFix:&systemVersionBugFix];
+	
+	return systemVersionMajor >= 10 && systemVersionMinor >= 5;
+}
+
++ (BOOL)isAtLeastSnowLeopard {
+	SInt32 systemVersionMajor;
+	SInt32 systemVersionMinor;
+	SInt32 systemVersionBugFix;
+	
+	[self systemVersionMajor:&systemVersionMajor minor:&systemVersionMinor bugFix:&systemVersionBugFix];
+	
+	return systemVersionMajor >= 10 && systemVersionMinor >= 6;
 }
 
 #endif

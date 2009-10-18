@@ -22,8 +22,12 @@
 + (BOOL)isOS3;
 #else
 + (BOOL)isTiger;
+
 + (BOOL)isLeopard;
++ (BOOL)isAtLeastLeopard;
+
 + (BOOL)isSnowLeopard;
++ (BOOL)isAtLeastSnowLeopard;
 #endif
 
 @end
