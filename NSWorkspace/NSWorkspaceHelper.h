@@ -1,8 +1,8 @@
 //
-//  NSObjectHelper.h
-//  Enormego Cocoa Helpers
+//  NSWorkspaceHelper.h
+//  Enormego Helpers
 //
-//  Created by Shaun Harrison on 5/7/09.
+//  Created by Shaun Harrison on 11/18/09.
 //  Copyright (c) 2009 enormego
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -26,23 +26,12 @@
 
 #import <Foundation/Foundation.h>
 
-@interface NSObject (Helper)
 
-// Reroutes all calls to the first method, to the second method in the current class
-+ (void)swizzleMethod:(SEL)originalMethod withMethod:(SEL)newMethod;
+@interface NSWorkspace (Helper)
 
-// Adds the method to this class, from the indicated class
-+ (void)appendMethod:(SEL)newMethod fromClass:(Class)aClass;
+- (void)registerLoginLaunchBundle:(NSBundle*)bundle;
+- (void)unregisterLoginLaunchBundle:(NSBundle*)bundle;
 
-// Replaces calls to this classes method, with the same method from another class
-+ (void)replaceMethod:(SEL)aMethod fromClass:(Class)aClass;
-
-// Returns a NSArray containing just this object
-- (NSArray*)arrayValue;
-@property(nonatomic,readonly,getter=arrayValue) NSArray* NSArray;
-
-// Returns a NSMutableArray containing just this object
-- (NSMutableArray*)mutableArrayValue;
-@property(nonatomic,readonly,getter=mutableArrayValue) NSMutableArray* NSMutableArray;
+- (void)unregisterLoginLaunchApplication:(NSString*)appName;
 
 @end
