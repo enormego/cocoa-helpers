@@ -27,26 +27,25 @@
 #if TARGET_OS_IPHONE
 #import "UIViewControllerHelper.h"
 
-@interface UIViewController (Private)
-- (void)setParentViewController:(UIViewController*)parentViewController;
-@end
-
 @implementation UIViewController (Helper)
 
-- (void)presentPopUpViewController:(UIViewController*)viewController {
-	[viewController setParentViewController:self];
-
-	if(![[UIApplication sharedApplication] isStatusBarHidden]) {
-		CGRect frame = self.view.bounds;
-		frame.origin.y = [UIApplication sharedApplication].statusBarFrame.size.height;
-		frame.size.height -= frame.origin.y;
-		viewController.view.frame = frame;
+- (void)presentPopUpViewController:(UIViewController<PopUpViewControllerDelegate>*)viewController {
+	viewController.poppedUpFromViewController = self;
+	
+	if(self.view.bounds.size.height == [UIScreen mainScreen].bounds.size.height) {
+		if(![viewController wantsFullScreenLayout]) {
+			CGRect frame = self.view.bounds;
+			frame.origin.y = [UIApplication sharedApplication].statusBarFrame.size.height;
+			frame.size.height -= frame.origin.y;
+			viewController.view.frame = frame;
+		} else {
+			viewController.view.frame = self.view.bounds;
+		}
 	} else {
 		viewController.view.frame = self.view.bounds;
 	}
-	
 	viewController.view.alpha = 0.0f;
-
+	
 	[self.view addSubview:viewController.view];
 	
 	[viewController viewWillAppear:YES];
@@ -65,10 +64,10 @@
 }
 
 - (void)dismissPopUpViewController {
-	[self.parentViewController dismissPopUpViewController:self];
+	[((UIViewController<PopUpViewControllerDelegate>*)self).poppedUpFromViewController dismissPopUpViewController:self];
 }
 
-- (void)dismissPopUpViewController:(UIViewController*)viewController {
+- (void)dismissPopUpViewController:(UIViewController<PopUpViewControllerDelegate>*)viewController {
 	[viewController viewWillDisappear:YES];
 	
 	[UIView beginAnimations:@"dismissPopUpViewController" context:viewController];
@@ -77,20 +76,13 @@
 	viewController.view.alpha = 0.0f;
 	[UIView commitAnimations];
 	
-	UINavigationController* navigationController = nil;
-	
 	if([self isKindOfClass:[UINavigationController class]]) {
-		navigationController = (id)self;
-	} else if([self isKindOfClass:[UITabBarController class]]) {
-		if([[(UITabBarController*)self selectedViewController] isKindOfClass:[UINavigationController class]]) {
-			navigationController = (id)[(UITabBarController*)self selectedViewController];
+		if([((UINavigationController*)self).topViewController.view isKindOfClass:[UIScrollView class]]) {
+			((UIScrollView*)((UINavigationController*)self).topViewController.view).scrollsToTop = YES;
+		} else if([((UINavigationController*)self).topViewController respondsToSelector:@selector(tableView)]) {
+			((UITableViewController*)((UINavigationController*)self).topViewController).tableView.scrollsToTop = YES;
 		}
-	}
-	
-	if(navigationController) {
-		if([navigationController.topViewController.view isKindOfClass:[UIScrollView class]]) {
-			((UIScrollView*)navigationController.topViewController.view).scrollsToTop = YES;
-		}
+		
 	}
 }
 

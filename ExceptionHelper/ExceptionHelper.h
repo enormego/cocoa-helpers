@@ -24,10 +24,6 @@
 //  THE SOFTWARE.
 //
 
-#if TARGET_IPHONE_SIMULATOR
-// #define ENABLE_EXCEPTIONS 1
-#endif
-
 #ifdef ENABLE_EXCEPTIONS
 #import <Foundation/Foundation.h>
 

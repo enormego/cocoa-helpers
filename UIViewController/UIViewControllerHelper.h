@@ -27,16 +27,22 @@
 #if TARGET_OS_IPHONE
 #import <UIKit/UIKit.h>
 
+@protocol PopUpViewControllerDelegate<NSObject>
+@required
+@property(nonatomic,retain) UIViewController* poppedUpFromViewController;
+@end
+
+
 @interface UIViewController (Helper)
 
 // A "Pop Up" is intended to only take up a portion of the screen, similar to a UIAlertView
 
 // Adds a "Pop Up" view to the current view controller
-- (void)presentPopUpViewController:(UIViewController*)viewController;
+- (void)presentPopUpViewController:(UIViewController<PopUpViewControllerDelegate>*)viewController;
 
 // Dismisses the "Pop Up" view
-- (void)dismissPopUpViewController; // Calls the method below on parentViewController
-- (void)dismissPopUpViewController:(UIViewController*)viewController;
+- (void)dismissPopUpViewController; // Calls the method below on poppedUpFromViewController
+- (void)dismissPopUpViewController:(UIViewController<PopUpViewControllerDelegate>*)viewController;
 
 @end
 #endif

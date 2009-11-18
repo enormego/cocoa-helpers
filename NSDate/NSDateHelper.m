@@ -27,6 +27,7 @@
 #import "NSDateHelper.h"
 
 @implementation NSDate (Helper)
+
 + (NSDate*)dateWithString:(NSString*)dateString formatString:(NSString*)dateFormatterString {
 	if(!dateString) return nil;
 	
@@ -37,6 +38,7 @@
 
 + (NSDate*)dateWithISO8601String:(NSString*)dateString {
 	if(!dateString) return nil;
+	
 	if([dateString hasSuffix:@" 00:00"]) {
 		dateString = [[dateString substringToIndex:(dateString.length-6)] stringByAppendingString:@"GMT"];
 	} else if ([dateString hasSuffix:@"Z"]) {
@@ -88,18 +90,18 @@
 	diff = round(diff/60);
 	if(diff < 60) {
 		if(diff == 1) {
-			return LocalizedStringWithFormat(@"%d minutes ago", (int)diff);
-		} else {
 			return LocalizedStringWithFormat(@"%d minute ago", (int)diff);
+		} else {
+			return LocalizedStringWithFormat(@"%d minutes ago", (int)diff);
 		}
 	}
 	
 	diff = round(diff/60);
 	if(diff < 24) {
 		if(diff == 1) {
-			return LocalizedStringWithFormat(@"%d hours ago", (int)diff);
-		} else {
 			return LocalizedStringWithFormat(@"%d hour ago", (int)diff);
+		} else {
+			return LocalizedStringWithFormat(@"%d hours ago", (int)diff);
 		}
 	}
 	

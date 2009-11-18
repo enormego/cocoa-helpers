@@ -27,6 +27,9 @@
 #if TARGET_OS_IPHONE
 #import "UIColorHelper.h"
 
+UIColor* UIColorMakeRGB(CGFloat red, CGFloat green, CGFloat blue) {
+	return [UIColor colorWithRed:red/255.0f green:green/255.0f blue:blue/255.0f alpha:1.0f]
+}
 
 @implementation UIColor (Helper)
 

@@ -30,6 +30,8 @@
 #import "UITableViewUpdatingView.h"
 
 #define UPDATING_OFFSET_Y (self.frame.size.height - 42.0f - 10.0f)
+#define BACKGROUND_HEADER_TAG 0x8577
+#define ACTIVITY_TAG 0x5646
 
 @interface UITableView (HelperPrivate)
 - (UIView*)overlayView;
@@ -39,18 +41,41 @@
 
 @implementation UITableView (Helper)
 
-- (void)setActivity:(BOOL)isAnimated {
-	[self setActivity:isAnimated title:LocalizedString(@"Updating...")];
+- (UIColor*)headerBackgroundColor {
+	return [self viewWithTag:BACKGROUND_HEADER_TAG].backgroundColor;
 }
 
-- (void)setActivity:(BOOL)isAnimated title:(NSString*)title {
+- (void)setHeaderBackgroundColor:(UIColor*)color {
+	UIView* headerBackgroundView;
+	
+	if(!(headerBackgroundView = [self viewWithTag:BACKGROUND_HEADER_TAG])) {
+		headerBackgroundView = [[[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0 - self.bounds.size.height, self.bounds.size.width, self.bounds.size.height)] autorelease];
+        headerBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+		headerBackgroundView.tag = BACKGROUND_HEADER_TAG;
+		[self insertSubview:headerBackgroundView atIndex:0];
+	}
+	
+	headerBackgroundView.backgroundColor = color;
+}
+
+- (void)setActivity:(BOOL)hasActivity {
+	[self setActivity:hasActivity title:[UITableViewUpdatingView defaultTitle]];
+}
+
+- (void)setActivity:(BOOL)hasActivity title:(NSString*)title {
 	[[self updatingView] removeFromSuperview];
 	
-	if(isAnimated) {
-		UITableViewUpdatingView* view = [[UITableViewUpdatingView alloc] initWithFrame:CGRectMake((int)((self.frame.size.width-130.0f)/2), UPDATING_OFFSET_Y, 130.0f, 42.0f) title:title];
-		view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin;
-		[self addSubview:view];
-		[view release];
+	if(hasActivity) {
+		CGRect updatingRect;
+		updatingRect.size = CGSizeMake([UITableViewUpdatingView widthForTitle:title], 42.0f);
+		updatingRect.origin.y = UPDATING_OFFSET_Y;
+		updatingRect.origin.x = roundf((self.frame.size.width - updatingRect.size.width) / 2);
+		
+		UITableViewUpdatingView* updatingView = [[UITableViewUpdatingView alloc] initWithFrame:updatingRect title:title];
+		updatingView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin;
+		updatingView.tag = ACTIVITY_TAG;
+		[self addSubview:updatingView];
+		[updatingView release];
 	}
 }
 
@@ -105,13 +130,7 @@
 }
 
 - (UITableViewUpdatingView*)updatingView {
-	for(UIView* view in self.subviews) {
-		if([view isKindOfClass:[UITableViewUpdatingView class]]) {
-			return (UITableViewUpdatingView*)view;
-		}
-	}
-	
-	return nil;
+	return (UITableViewUpdatingView*)[self viewWithTag:ACTIVITY_TAG];
 }
 
 - (void)setContentOffset:(CGPoint)point {

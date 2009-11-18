@@ -30,7 +30,8 @@
 /*
  * Convenience method to return a UIColor with RGB values based on 255
  */
-#define UIColorMakeRGB(nRed,nGreen,nBlue) [UIColor colorWithRed:(nRed)/255.0f green:(nGreen)/255.0f blue:(nBlue)/255.0f alpha:1.0f]
+
+UIColor* UIColorMakeRGB(CGFloat red, CGFloat green, CGFloat blue); 
 
 @interface UIColor (Helper)
 

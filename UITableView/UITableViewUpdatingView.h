@@ -37,5 +37,8 @@
 
 - (id)initWithFrame:(CGRect)frame title:(NSString*)title;
 
++ (NSString*)defaultTitle;
++ (CGFloat)widthForTitle:(NSString*)title;
+
 @end
 #endif

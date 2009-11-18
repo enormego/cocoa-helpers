@@ -1,44 +1,37 @@
-# About Cocoa Helpers
-Cocoa Helpers are a collection of categories we've written to the Apple UIKit/Cocoa classes to make them more useful.
+h1. Cocoa Helpers
 
-# Helpers
-## NSArray
-* **empty** property - Checks to see if the array is empty
+Created by enormego
 
-## NSDictionary
-* **containsObjectForKey:** - Checks to see if the dictionary contains the given key
-* **empty** property - Checks to see if the dictionary is empty
+Cocoa Helpers are a collection of objective-c categories we've written for the standard Apple Cocoa/UIKit classes to make them more useful.
 
-## NSString
-* **containsString:** - Checks to see if the string contains the given string, case insenstive
-* **containsString:options:** - Checks to see if the string contains the given string while allowing you to define the compare options
-* **md5** - Returns the MD5 value of the string
+h1. Documentation
 
-## NSURL
-* **baseString** - Returns a string of the base of the URL, will contain a trailing slash
+We're going to build our the wiki part as soon as we get some time, in the mean time, you can check out the header files where most methods are documented in line.
 
-## UIAlertView
-* **UIAlertViewQuick(NSString* title, NSString* message, NSString* dismissButtonTitle)** - Convenience method to throw a quick alert to the user
+h1. Questions
 
-## UIColor
-* **UIColorMakeRGB(nRed,nGreen,nBlue)** - Convenience method to return a UIColor with RGB values based on 255
-
-## UIDevice
-* **availableMemory** property - Available device memory in MB
-
-## UIImage
-* **imageWithContentsOfURL:** - Creates an image from the contents of a URL
-* **scaleToSize:** - Scales the image to the given size
-* **scaleAndCropToSize:** - Scales and crops the image to the given size
-* **scaleHeightAndCropWidthToSize:** - Scales the height and crops the width to the size
-* **scaleWidthAndCropHeightToSize:** - Scales the width and crops the height to the size
-* **scaleToSize:withOffset:** - Scales image to the size, crops to the offset
-
-# Documentation
-There's additional documentation and examples provided in each header file
-
-# Questions
 Feel free to contact info@enormego.com if you need any help with any of these methods or wish to contribute to Cocoa Helpers.
 
-# License
-This work is licensed under the Creative Commons GNU General Public License License. To view a copy of this license, visit http://creativecommons.org/licenses/GPL/2.0/ or send a letter to Creative Commons, 171 Second Street, Suite 300, San Francisco, California, 94105, USA.
+h1. License
+
+Cocoa-Helpers are available under the MIT license:
+
+_Copyright (c) 2009 enormego_
+
+_Permission is hereby granted, free of charge, to any person obtaining a copy_
+_of this software and associated documentation files (the "Software"), to deal_
+_in the Software without restriction, including without limitation the rights_
+_to use, copy, modify, merge, publish, distribute, sublicense, and/or sell_
+_copies of the Software, and to permit persons to whom the Software is_
+_furnished to do so, subject to the following conditions:_
+
+_The above copyright notice and this permission notice shall be included in_
+_all copies or substantial portions of the Software._
+
+_THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR_
+_IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,_
+_FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE_
+_AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER_
+_LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,_
+_OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN_
+_THE SOFTWARE._

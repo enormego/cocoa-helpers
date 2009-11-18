@@ -30,16 +30,18 @@
 
 @interface UITableView (Helper)
 
-// If active, adds an activity view to bottom of a UITableView set to "Update..."
-- (void)setActivity:(BOOL)isAnimated;
+// If active, adds an activity view to bottom of a UITableView set to "Update…"
+- (void)setActivity:(BOOL)hasActivity;
 
 // If active, adds an activity view to bottom of a UITableView with desired title
-- (void)setActivity:(BOOL)isAnimated title:(NSString*)title;
+- (void)setActivity:(BOOL)hasActivity title:(NSString*)title;
 
 // If content is unavailable, overlays the UITableView with a message indicating there's no content
 // Default message is "Content Unavailable".  Will check for delegate method: tableViewContentUnavailableText:
 - (void)setContentUnavailable:(BOOL)isUnavailable;
 
+// Allows you to set everything before y=0.0f to a different color than the tableView's backgroundColor
+@property(nonatomic,retain) UIColor* headerBackgroundColor;
 @end
 
 @protocol UITableViewContentUnavailableDataSource<NSObject>
