@@ -36,14 +36,14 @@
 
 + (NSString*)executeSynchronousTaskAtLaunchPath:(NSString*)launchPath withArguments:(NSArray*)arguments {
 	NSTask* task = [[NSTask alloc] init];
-
-    [task setLaunchPath:launchPath];
-    [task setArguments:arguments];
-    [task setStandardOutput:[NSPipe pipe]];
 	
-    NSFileHandle* outputHandle = [[task standardOutput] fileHandleForReading];
+	[task setLaunchPath:launchPath];
+	[task setArguments:arguments];
+	[task setStandardOutput:[NSPipe pipe]];
 	
-    [task launch];
+	NSFileHandle* outputHandle = [[task standardOutput] fileHandleForReading];
+	
+	[task launch];
 	
 	[task waitUntilExit];
 	
