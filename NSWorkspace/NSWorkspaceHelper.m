@@ -26,59 +26,76 @@
 
 #import "NSWorkspaceHelper.h"
 
-
 @implementation NSWorkspace (Helper)
 
 - (void)registerLoginLaunchBundle:(NSBundle*)bundle {
 	[self unregisterLoginLaunchBundle:bundle]; // Removes the old bundle, incase the application location changed
 	
 	NSURL* bundleURL = [NSURL fileURLWithPath:[bundle bundlePath] isDirectory:YES];
+	if(!bundleURL) return;
 	
 	LSSharedFileListRef loginList = LSSharedFileListCreate(NULL, kLSSharedFileListSessionLoginItems, NULL);
+	if(!loginList) return;
 	
-	LSSharedFileListItemRef loginItem = LSSharedFileListInsertItemURL(loginList, kLSSharedFileListItemLast, NULL, NULL, (CFURLRef)bundleURL, NULL, NULL);             
-	CFRelease(loginItem);
+	LSSharedFileListItemRef loginItem;
+
+	if((loginItem = LSSharedFileListInsertItemURL(loginList, kLSSharedFileListItemLast, NULL, NULL, (CFURLRef)bundleURL, NULL, NULL))) {
+		CFRelease(loginItem);
+	}
 	
 	CFRelease(loginList);
 }
 
 - (void)unregisterLoginLaunchBundle:(NSBundle*)bundle {
-	LSSharedFileListRef loginList = LSSharedFileListCreate(NULL, kLSSharedFileListSessionLoginItems, NULL);
-	CFArrayRef loginItems = LSSharedFileListCopySnapshot(loginList, NULL);
-	
-	for(id loginItem in (NSArray*)loginItems) {
-		CFURLRef outURL;
-		
-		LSSharedFileListItemResolve((LSSharedFileListItemRef)loginItem, 0, &outURL, NULL);
-		NSBundle* loginItemBundle = [NSBundle bundleWithPath:[(NSURL*)outURL path]];
-		
-		if([[loginItemBundle bundleIdentifier] isEqualToString:[bundle bundleIdentifier]]) {
-			LSSharedFileListItemRemove(loginList, (LSSharedFileListItemRef)loginItem);
-		}
+	NSString* bundleIdentifier = [bundle bundleIdentifier];
 
-		CFRelease(outURL);
+	LSSharedFileListRef loginList = LSSharedFileListCreate(NULL, kLSSharedFileListSessionLoginItems, NULL);
+	if(!loginList) return;
+	
+	UInt32 seedValue;
+	NSArray* loginItemsArray = (NSArray *)LSSharedFileListCopySnapshot(loginList, &seedValue);
+	if(!loginItemsArray) return;
+	
+	for (id item in loginItemsArray) {		
+		LSSharedFileListItemRef itemRef = (LSSharedFileListItemRef)item;
+		CFURLRef bundleURL;
+		
+		if (LSSharedFileListItemResolve(itemRef, 0, &bundleURL, NULL) == noErr) {
+			if([[[NSBundle bundleWithPath:(NSString*)CFURLGetString(bundleURL)] bundleIdentifier] isEqualToString:bundleIdentifier]) {
+				LSSharedFileListItemRemove(loginList, itemRef);
+			}
+		}
 	}
 	
-	CFRelease(loginItems);
-	CFRelease(loginList);
+	[loginItemsArray release];
+	
+	CFRelease(loginList);	
 }
 
 - (void)unregisterLoginLaunchApplication:(NSString*)appName {
 	LSSharedFileListRef loginList = LSSharedFileListCreate(NULL, kLSSharedFileListSessionLoginItems, NULL);
-	CFArrayRef loginItems = LSSharedFileListCopySnapshot(loginList, NULL);
+	if(!loginList) return;
 	
-	for(id loginItem in (NSArray*)loginItems) {
-		CFStringRef listItemName = LSSharedFileListItemCopyDisplayName((LSSharedFileListItemRef)loginItem);
+	UInt32 seedValue;
+	NSArray* loginItemsArray = (NSArray *)LSSharedFileListCopySnapshot(loginList, &seedValue);
+	if(!loginItemsArray) return;
+	
+	for (id item in loginItemsArray) {		
+		LSSharedFileListItemRef itemRef = (LSSharedFileListItemRef)item;
+		NSString* itemName = (NSString*)LSSharedFileListItemCopyDisplayName(itemRef);
 		
-		if([(NSString*)listItemName isEqualToString:appName]) {
-			LSSharedFileListItemRemove(loginList, (LSSharedFileListItemRef)loginItem);
+		if (itemName) {
+			if([itemName isEqualToString:appName]) {
+				LSSharedFileListItemRemove(loginList, itemRef);
+			}
+			
+			[itemName release];
 		}
-		
-		CFRelease(listItemName);
 	}
 	
-	CFRelease(loginItems);
-	CFRelease(loginList);
+	[loginItemsArray release];
+	
+	CFRelease(loginList);	
 }
 
 @end
