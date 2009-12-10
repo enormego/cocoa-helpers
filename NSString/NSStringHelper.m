@@ -31,6 +31,15 @@ int const GGCharacterIsNotADigit = 10;
 
 @implementation NSString (Helper)
 
++ (NSString*)stringWithFormattedUnsignedInteger:(NSUInteger)integer {
+	NSNumber* number = [NSNumber numberWithUnsignedInteger:integer];
+	NSNumberFormatter* formatter = [[NSNumberFormatter alloc] init];
+	[formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+	NSString* formattedString = [formatter stringFromNumber:number];
+	[formatter release];
+	return formattedString;
+}
+
 - (BOOL)containsString:(NSString*)string {
 	return [self containsString:string options:NSCaseInsensitiveSearch];
 }

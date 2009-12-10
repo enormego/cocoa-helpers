@@ -25,7 +25,7 @@
 //
 
 #import "NSObjectHelper.h"
-#import <objc/objc-class.h>
+#import </Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator3.1.sdk/usr/include/objc/objc-class.h>
 
 // MethodSwizzle used from here: http://www.cocoadev.com/index.pl?MethodSwizzle
 BOOL MethodSwizzle(Class klass, SEL origSel, SEL altSel, BOOL forInstance) {

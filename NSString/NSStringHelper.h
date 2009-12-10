@@ -45,6 +45,11 @@ enum {
 @interface NSString (Helper)
 
 /*
+ * Returns a comma separated NSString for an NSUInteger
+ */
++ (NSString*)stringWithFormattedUnsignedInteger:(NSUInteger)integer;
+
+/*
  * Checks to see if the string contains the given string, case insenstive
  */
 - (BOOL)containsString:(NSString*)string;
