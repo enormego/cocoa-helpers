@@ -36,6 +36,12 @@
 + (UIImage*)imageWithContentsOfURL:(NSURL*)url;
 
 /*
+ * Creates an image with a path compontent relative to
+ * the main bundle's resource path
+ */
++ (UIImage*)imageWithResourcesPathCompontent:(NSString*)pathCompontent;
+
+/*
  * Scales the image to the given size
  */
 - (UIImage*)scaleToSize:(CGSize)size;

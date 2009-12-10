@@ -40,6 +40,10 @@
 	}
 }
 
++ (UIImage*)imageWithResourcesPathCompontent:(NSString*)pathCompontent {
+	return [UIImage imageWithContentsOfFile:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:pathCompontent]];
+}
+
 - (UIImage*)scaleToSize:(CGSize)size {
 	UIGraphicsBeginImageContext(size);
 	
