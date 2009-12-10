@@ -369,6 +369,14 @@
 	}	
 }
 
+- (BOOL)isDateToday {
+	return [[[NSDate date] midnightDate] isEqual:[self midnightDate]];
+}
+
+- (BOOL)isDateYesterday {
+	return [[[NSDate dateWithTimeIntervalSinceNow:-86400] midnightDate] isEqual:[self midnightDate]];
+}
+
 - (NSDate*)midnightDate {
 	return [[NSCalendar currentCalendar] dateFromComponents:[[NSCalendar currentCalendar] components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit) fromDate:self]];
 }

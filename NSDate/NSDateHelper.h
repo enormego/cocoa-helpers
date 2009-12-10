@@ -82,6 +82,12 @@
 // Checks whether current date is past date
 - (BOOL)isPastDate;
 
+// Checks whether the current date occured today
+- (BOOL)isDateToday;
+
+// Checks whether the current date occured yesterday
+- (BOOL)isDateYesterday;
+
 // Returns the current date, at midnight
 - (NSDate*)midnightDate;
 
