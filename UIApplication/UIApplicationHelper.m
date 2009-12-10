@@ -30,12 +30,19 @@
 
 @implementation UIApplication (Helper)
 
+- (NSString *)documentsDirectory {
+	return [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+}
 
 - (void)setApplicationStyle:(UIStatusBarStyle)style animated:(BOOL)animated {
+	[self setApplicationStyle:style animated:animated defaultBackgroundColor:[UIColor whiteColor]];
+}
+
+- (void)setApplicationStyle:(UIStatusBarStyle)style animated:(BOOL)animated defaultBackgroundColor:(UIColor*)defaultBackgroundColor {
 	[self setStatusBarStyle:style animated:animated];
 	
-	UIColor* newBackgroundColor = style == UIStatusBarStyleDefault ? [UIColor whiteColor] : [UIColor blackColor];
-	UIColor* oldBackgroundColor = style == UIStatusBarStyleDefault ? [UIColor blackColor] : [UIColor whiteColor];
+	UIColor* newBackgroundColor = style == UIStatusBarStyleDefault ? defaultBackgroundColor : [UIColor blackColor];
+	UIColor* oldBackgroundColor = style == UIStatusBarStyleDefault ? [UIColor blackColor] : defaultBackgroundColor;
 	
 	if(animated) {
 	    [CATransaction setValue:[NSNumber numberWithFloat:0.3] forKey:kCATransactionAnimationDuration];

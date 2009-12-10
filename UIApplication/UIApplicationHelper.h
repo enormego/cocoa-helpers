@@ -30,12 +30,22 @@
 
 @interface UIApplication (Helper)
 
-/*
+/**
+ * Returns the path to the application's Documents directory.
+ */
+- (NSString *)documentsDirectory;
+
+/**
  * Sets the status bar style as well as the key window background color
  * UIStatusBarStyleDefault will result in a white background color
  * UIStatusBarStyleBlackTranslucent/Opaque will result in a black background color
  */
 - (void)setApplicationStyle:(UIStatusBarStyle)style animated:(BOOL)animated;
+
+/**
+ * Same as the above, however, you can specify the default/original/starting backgroundColor, instead of white.
+ */
+- (void)setApplicationStyle:(UIStatusBarStyle)style animated:(BOOL)animated defaultBackgroundColor:(UIColor*)defaultBackgroundColor;
 
 @end
 #endif
