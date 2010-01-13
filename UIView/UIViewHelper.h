@@ -27,6 +27,8 @@
 #if TARGET_OS_IPHONE
 #import <UIKit/UIKit.h>
 
+#define UIViewAutoresizingFlexibleMargins UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin
+#define UIViewAutoresizingFlexibleSize UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight
 
 @interface UIView (EGOHelper)
 

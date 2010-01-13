@@ -35,5 +35,6 @@
 }
 
 @property(nonatomic,copy) NSString* text;
+@property(nonatomic,readonly) UILabel* label;
 @end
 #endif

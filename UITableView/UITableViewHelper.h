@@ -45,6 +45,17 @@
 @end
 
 @protocol UITableViewContentUnavailableDataSource<NSObject>
+// Default: "Content Unavailable"
 - (NSString*)tableViewContentUnavailableText:(UITableView*)tableView;
+
+// Default: Dark Blue
+- (UIColor*)tableViewContentUnavailableTextColor:(UITableView*)tableView;
+
+// Default: Black, 0.5 Alpha
+- (UIColor*)tableViewContentUnavailableTextShadowColor:(UITableView*)tableView;
+
+// Default: White
+- (UIColor*)tableViewContentUnavailableBackgroundColor:(UITableView*)tableView;
 @end
+
 #endif

@@ -101,6 +101,19 @@
 			view.text = [(id<UITableViewContentUnavailableDataSource>)self.dataSource tableViewContentUnavailableText:self];
 		}
 		
+		if([self.dataSource respondsToSelector:@selector(tableViewContentUnavailableBackgroundColor:)]) {
+			view.backgroundColor = [(id<UITableViewContentUnavailableDataSource>)self.dataSource tableViewContentUnavailableBackgroundColor:self];
+			view.label.backgroundColor = view.backgroundColor;
+		}
+		
+		if([self.dataSource respondsToSelector:@selector(tableViewContentUnavailableTextColor:)]) {
+			view.label.textColor = [(id<UITableViewContentUnavailableDataSource>)self.dataSource tableViewContentUnavailableTextColor:self];
+		}
+		
+		if([self.dataSource respondsToSelector:@selector(tableViewContentUnavailableTextShadowColor:)]) {
+			view.label.shadowColor = [(id<UITableViewContentUnavailableDataSource>)self.dataSource tableViewContentUnavailableTextShadowColor:self];
+		}
+		
 		[self addSubview:view];
 		[view release];
 	}
