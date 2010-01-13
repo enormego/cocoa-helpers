@@ -31,9 +31,12 @@
 + (NSDate*)dateWithString:(NSString*)dateString formatString:(NSString*)dateFormatterString {
 	if(!dateString) return nil;
 	
-    NSDateFormatter* formatter = [[[NSDateFormatter alloc] init] autorelease];
+    NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
 	[formatter setDateFormat:dateFormatterString];
-	return [formatter dateFromString:dateString];
+	
+	NSDate *theDate = [formatter dateFromString:dateString];
+	[formatter release];
+	return theDate;
 }
 
 + (NSDate*)dateWithISO8601String:(NSString*)dateString {
