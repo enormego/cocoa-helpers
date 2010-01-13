@@ -107,7 +107,8 @@ CGFloat degreesToRadiens(CGFloat degrees){
 	//  if shadow property is set, redraw image with a shadow
 	if (aBlurRadius > 0.0f) {
 		UIGraphicsBeginImageContext(CGSizeMake(scaledImage.size.width + (aBlurRadius*2), scaledImage.size.height + (aBlurRadius*2)));
-		CGContextSetShadowWithColor(imageContext, aOffset, aBlurRadius, aShadowColor.CGColor);
+		CGContextRef imageShadowContext = UIGraphicsGetCurrentContext();
+		CGContextSetShadowWithColor(imageShadowContext, aOffset, aBlurRadius, aShadowColor.CGColor);
 		[scaledImage drawInRect:CGRectMake(aBlurRadius, aBlurRadius, scaledImage.size.width, scaledImage.size.height)];
 		scaledImage = UIGraphicsGetImageFromCurrentImageContext();
 		UIGraphicsEndImageContext();
