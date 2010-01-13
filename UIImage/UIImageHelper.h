@@ -52,6 +52,11 @@
 - (UIImage*)aspectScaleToMaxSize:(CGFloat)size withBorderSize:(CGFloat)borderSize borderColor:(UIColor*)aColor cornerRadius:(CGFloat)aRadius shadowOffset:(CGSize)aOffset shadowBlurRadius:(CGFloat)aBlurRadius shadowColor:(UIColor*)aShadowColor;
 
 /*
+ * Aspect scale with a shadow
+ */
+- (UIImage*)aspectScaleToMaxSize:(CGFloat)size withShadowOffset:(CGSize)aOffset blurRadius:(CGFloat)aRadius color:(UIColor*)aColor;
+
+/*
  * Aspect scale with corner radius
  */
 - (UIImage*)aspectScaleToMaxSize:(CGFloat)size withCornerRadius:(CGFloat)aRadius;
@@ -60,7 +65,6 @@
  * Aspect scales the image to a max size
  */
 - (UIImage*)aspectScaleToMaxSize:(CGFloat)size;
-
 
 
 @end

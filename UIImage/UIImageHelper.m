@@ -70,14 +70,14 @@ CGFloat degreesToRadiens(CGFloat degrees){
 	CGFloat newWidth = imageSize.width   / scaleFactor;
 	CGFloat newHeight = imageSize.height / scaleFactor;
 	
-	CGRect imageRect = CGRectMake(0.0f, 0.0f, (newWidth + floorf((borderSize*2.0))) + aBlurRadius, (newHeight + floorf((borderSize*2.0))) + aBlurRadius);
+	CGRect imageRect = CGRectMake(0.0f, 0.0f, (newWidth + floorf((borderSize*2.0))), (newHeight + floorf((borderSize*2.0))));
 	
 	UIGraphicsBeginImageContext(CGSizeMake(imageRect.size.width, imageRect.size.height));
-
+	
 	CGContextRef imageContext = UIGraphicsGetCurrentContext();
-		
+	
 	if (aRadius > 0.0f) {
-
+		
 		CGFloat radius;	
 		radius = MIN(aRadius, floorf(imageRect.size.width/2));
 		float x0 = CGRectGetMinX(imageRect), y0 = CGRectGetMinY(imageRect), x1 = CGRectGetMaxX(imageRect), y1 = CGRectGetMaxY(imageRect);
@@ -93,21 +93,26 @@ CGFloat degreesToRadiens(CGFloat degrees){
 		
 	}
 	
-	if (aBlurRadius > 0.0f) {
-		CGContextSetShadowWithColor(imageContext, aOffset, aBlurRadius, aShadowColor.CGColor);
-	}
-	
 	//  if a border size is passed, shadow will draw around the border, not the image.
 	if (aColor) {
-		
 		[aColor setFill];
-		UIRectFill(CGRectMake(aBlurRadius, aBlurRadius, imageRect.size.width - aBlurRadius, imageRect.size.height - aBlurRadius));
-		
+		UIRectFill(imageRect);
 	}
 	
-	[self drawInRect:CGRectMake(borderSize+aBlurRadius, borderSize+aBlurRadius, newWidth, newHeight)];
+	[self drawInRect:CGRectMake(borderSize, borderSize, newWidth, newHeight)];
+	
 	UIImage* scaledImage = UIGraphicsGetImageFromCurrentImageContext();
 	UIGraphicsEndImageContext();
+	
+	//  if shadow property is set, redraw image with a shadow
+	if (aBlurRadius > 0.0f) {
+		UIGraphicsBeginImageContext(CGSizeMake(scaledImage.size.width + (aBlurRadius*2), scaledImage.size.height + (aBlurRadius*2)));
+		CGContextSetShadowWithColor(imageContext, aOffset, aBlurRadius, aShadowColor.CGColor);
+		[scaledImage drawInRect:CGRectMake(aBlurRadius, aBlurRadius, scaledImage.size.width, scaledImage.size.height)];
+		scaledImage = UIGraphicsGetImageFromCurrentImageContext();
+		UIGraphicsEndImageContext();
+		
+	}
 	
 	return scaledImage;	
 }
