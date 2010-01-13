@@ -2,7 +2,7 @@
 //  UIImageHelper.m
 //  Enormego Cocoa Helpers
 //
-//  Created by Shaun Harrison on 12/19/08.
+//  Created by Devin Doty on 1/13/2010.
 //  Copyright (c) 2008-2009 enormego
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -30,6 +30,10 @@
 
 @implementation UIImage (Helper)
 
+CGFloat degreesToRadiens(CGFloat degrees){
+	return degrees * M_PI / 180.0f;
+}
+
 + (UIImage*)imageWithContentsOfURL:(NSURL*)url {
 	NSError* error;
 	NSData* data = [NSURLConnection sendSynchronousRequest:[NSURLRequest requestWithURL:url] returningResponse:NULL error:NULL];
@@ -45,83 +49,83 @@
 }
 
 - (UIImage*)scaleToSize:(CGSize)size {
+	
 	UIGraphicsBeginImageContext(size);
-	
-	CGContextRef context = UIGraphicsGetCurrentContext();
-	CGContextTranslateCTM(context, 0.0, size.height);
-	CGContextScaleCTM(context, 1.0, -1.0);
-	
-	CGContextDrawImage(context, CGRectMake(0.0f, 0.0f, size.width, size.height), self.CGImage);
-	
+	[self drawInRect:CGRectMake(0.0f, 0.0f, size.width, size.height)];
 	UIImage* scaledImage = UIGraphicsGetImageFromCurrentImageContext();
-	
 	UIGraphicsEndImageContext();
 	
 	return scaledImage;
 }
 
-- (UIImage*)scaleAndCropToSize:(CGSize)size {
-	if(size.height > size.width) {
-		if(self.size.height > self.size.width) {
-			if((self.size.width  / self.size.height) >= (size.width / size.height)) {
-				return [self scaleHeightAndCropWidthToSize:size];
-			} else {
-				return [self scaleWidthAndCropHeightToSize:size];
-			}
-		} else {
-			return [self scaleHeightAndCropWidthToSize:size];
-		}    
-	} else {
-		if(self.size.width > self.size.height) {
-			if((self.size.height / self.size.width) >= (size.height / size.width)) {
-				return [self scaleWidthAndCropHeightToSize:size];
-			} else {
-				return [self scaleHeightAndCropWidthToSize:size];
-			}
-		} else {
-			return [self scaleWidthAndCropHeightToSize:size];
-		}    
+- (UIImage*)aspectScaleToMaxSize:(CGFloat)size withBorderSize:(CGFloat)borderSize borderColor:(UIColor*)aColor cornerRadius:(CGFloat)aRadius shadowOffset:(CGSize)aOffset shadowBlurRadius:(CGFloat)aBlurRadius shadowColor:(UIColor*)aShadowColor{
+	
+	CGSize imageSize = CGSizeMake(self.size.width, self.size.height);
+	
+	CGFloat hScaleFactor = imageSize.width / size;
+	CGFloat vScaleFactor = imageSize.height / size;
+	
+	CGFloat scaleFactor = MAX(hScaleFactor, vScaleFactor);
+	
+	CGFloat newWidth = imageSize.width   / scaleFactor;
+	CGFloat newHeight = imageSize.height / scaleFactor;
+	
+	CGRect imageRect = CGRectMake(0.0f, 0.0f, (newWidth + floorf((borderSize*2.0))) + aBlurRadius, (newHeight + floorf((borderSize*2.0))) + aBlurRadius);
+	
+	UIGraphicsBeginImageContext(CGSizeMake(imageRect.size.width, imageRect.size.height));
+
+	CGContextRef imageContext = UIGraphicsGetCurrentContext();
+		
+	if (aRadius > 0.0f) {
+
+		CGFloat radius;	
+		radius = MIN(aRadius, floorf(imageRect.size.width/2));
+		float x0 = CGRectGetMinX(imageRect), y0 = CGRectGetMinY(imageRect), x1 = CGRectGetMaxX(imageRect), y1 = CGRectGetMaxY(imageRect);
+		
+		CGContextBeginPath(imageContext);
+		CGContextMoveToPoint(imageContext, x0+radius, y0);
+		CGContextAddArcToPoint(imageContext, x1, y0, x1, y1, radius);
+		CGContextAddArcToPoint(imageContext, x1, y1, x0, y1, radius);
+		CGContextAddArcToPoint(imageContext, x0, y1, x0, y0, radius);
+		CGContextAddArcToPoint(imageContext, x0, y0, x1, y0, radius);
+		CGContextClosePath(imageContext);
+		CGContextClip(imageContext);
+		
 	}
-}
-
-- (UIImage*)scaleHeightAndCropWidthToSize:(CGSize)size {
-	float newWidth = (self.size.width * size.height) / self.size.height;
-	return [self scaleToSize:size withOffset:CGPointMake((newWidth - size.width) / 2, 0.0f)];
-}
-
-- (UIImage*)scaleWidthAndCropHeightToSize:(CGSize)size {
-	float newHeight = (self.size.height * size.width) / self.size.width;
-	return [self scaleToSize:size withOffset:CGPointMake(0, (newHeight - size.height) / 2)];
-}
-
-- (UIImage*)scaleToSize:(CGSize)size withOffset:(CGPoint)offset {
-	UIImage* scaledImage = [self scaleToSize:CGSizeMake(size.width + (offset.x * -2), size.height + (offset.y * -2))];
 	
-	UIGraphicsBeginImageContext(size);
+	if (aBlurRadius > 0.0f) {
+		CGContextSetShadowWithColor(imageContext, aOffset, aBlurRadius, aShadowColor.CGColor);
+	}
 	
-	CGContextRef context = UIGraphicsGetCurrentContext();
-	CGContextTranslateCTM(context, 0.0, size.height);
-	CGContextScaleCTM(context, 1.0, -1.0);
+	//  if a border size is passed, shadow will draw around the border, not the image.
+	if (aColor) {
+		
+		[aColor setFill];
+		UIRectFill(CGRectMake(aBlurRadius, aBlurRadius, imageRect.size.width - aBlurRadius, imageRect.size.height - aBlurRadius));
+		
+	}
 	
-	CGRect croppedRect;
-	croppedRect.size = size;
-	croppedRect.origin = CGPointZero;
-	
-	CGContextClipToRect(context, croppedRect);
-	
-	CGRect drawRect;
-	drawRect.origin = offset;
-	drawRect.size = scaledImage.size;
-	
-	CGContextDrawImage(context, drawRect, scaledImage.CGImage);
-	
-	
-	UIImage* croppedImage = UIGraphicsGetImageFromCurrentImageContext();
-	
+	[self drawInRect:CGRectMake(borderSize+aBlurRadius, borderSize+aBlurRadius, newWidth, newHeight)];
+	UIImage* scaledImage = UIGraphicsGetImageFromCurrentImageContext();
 	UIGraphicsEndImageContext();
 	
-	return croppedImage;
+	return scaledImage;	
 }
+
+- (UIImage*)aspectScaleToMaxSize:(CGFloat)size withShadowOffset:(CGSize)aOffset blurRadius:(CGFloat)aRadius color:(UIColor*)aColor{
+	return [self aspectScaleToMaxSize:size	withBorderSize:0 borderColor:nil cornerRadius:0 shadowOffset:aOffset shadowBlurRadius:aRadius shadowColor:aColor];
+}
+
+- (UIImage*)aspectScaleToMaxSize:(CGFloat)size withCornerRadius:(CGFloat)aRadius{
+	
+	return [self aspectScaleToMaxSize:size withBorderSize:0 borderColor:nil cornerRadius:aRadius shadowOffset:CGSizeZero shadowBlurRadius:0.0f shadowColor:nil];
+}
+
+- (UIImage*)aspectScaleToMaxSize:(CGFloat)size{
+	
+	return [self aspectScaleToMaxSize:size withBorderSize:0 borderColor:nil cornerRadius:0 shadowOffset:CGSizeZero shadowBlurRadius:0.0f shadowColor:nil];
+}
+
 
 @end
 #endif
