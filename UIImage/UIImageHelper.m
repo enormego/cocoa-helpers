@@ -132,6 +132,30 @@ CGFloat degreesToRadiens(CGFloat degrees){
 	return [self aspectScaleToMaxSize:size withBorderSize:0 borderColor:nil cornerRadius:0 shadowOffset:CGSizeZero shadowBlurRadius:0.0f shadowColor:nil];
 }
 
+- (UIImage*)aspectScaleToSize:(CGSize)size{
+	
+	CGSize imageSize = CGSizeMake(self.size.width, self.size.height);
+	
+	CGFloat hScaleFactor = imageSize.width / size.width;
+	CGFloat vScaleFactor = imageSize.height / size.height;
+	
+	CGFloat scaleFactor = MAX(hScaleFactor, vScaleFactor);
+	
+	CGFloat newWidth = imageSize.width   / scaleFactor;
+	CGFloat newHeight = imageSize.height / scaleFactor;
+	
+	// center vertically or horizontally in size passed
+	CGFloat leftOffset = (size.width - newWidth) / 2;
+	CGFloat topOffset = (size.height - newHeight) / 2;
+	
+	UIGraphicsBeginImageContext(CGSizeMake(size.width, size.height));
+	[self drawInRect:CGRectMake(leftOffset, topOffset, newWidth, newHeight)];
+	UIImage *scaledImage = UIGraphicsGetImageFromCurrentImageContext();
+	UIGraphicsEndImageContext();
+	
+	return scaledImage;	
+}
+
 
 @end
 #endif

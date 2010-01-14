@@ -66,6 +66,11 @@
  */
 - (UIImage*)aspectScaleToMaxSize:(CGFloat)size;
 
+/*
+ * Aspect scales the image to a rect size
+ */
+- (UIImage*)aspectScaleToSize:(CGSize)size;
+
 
 @end
 #endif
