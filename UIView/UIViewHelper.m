@@ -28,6 +28,14 @@
 
 #import "UIViewHelper.h"
 
+CGFloat DIW(CGFloat width) {
+	return DIWW(width, 320.0f, UIDeviceOrientationIsLandscape([UIDevice currentDevice].orientation) ? [UIScreen mainScreen].bounds.size.height : [UIScreen mainScreen].bounds.size.width);
+}
+
+CGFloat DIWW(CGFloat width, CGFloat baseWidth, CGFloat actualWidth) {
+	return floorf((width * actualWidth) / baseWidth);
+}
+
 @implementation UIView (EGOHelper)
 
 - (UIView*)superviewWithClass:(Class)svClass {
