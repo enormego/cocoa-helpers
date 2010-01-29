@@ -93,16 +93,16 @@ CGFloat degreesToRadiens(CGFloat degrees){
 		
 	}
 	
-	//  if a border size is passed, shadow will draw around the border, not the image.
-	if (aColor) {
-		[aColor setFill];
-		UIRectFill(imageRect);
-	}
-	
 	[self drawInRect:CGRectMake(borderSize, borderSize, newWidth, newHeight)];
 	
 	UIImage* scaledImage = UIGraphicsGetImageFromCurrentImageContext();
 	UIGraphicsEndImageContext();
+	
+	if (aColor) {
+		[aColor setStroke];
+		CGContextSetLineWidth(ctx, borderSize);
+		CGContextStrokeRect(ctx, imageRect);
+	}
 	
 	//  if shadow property is set, redraw image with a shadow
 	if (aBlurRadius > 0.0f) {
