@@ -30,6 +30,11 @@
 #define UIViewAutoresizingFlexibleMargins UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin
 #define UIViewAutoresizingFlexibleSize UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight
 
+// Device Independent Width
+// Calculates a width based on baseWidth, and scales it up or down depending on actualWidth
+CGFloat DIW(CGFloat width); // baseWidth = 320, actualWidth = device width
+CGFloat DIWW(CGFloat width, CGFloat baseWidth, CGFloat actualWidth);
+
 @interface UIView (EGOHelper)
 
 /*

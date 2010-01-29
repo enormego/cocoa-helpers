@@ -31,11 +31,18 @@
 
 - (void)presentPopUpViewController:(UIViewController<PopUpViewControllerDelegate>*)viewController {
 	viewController.poppedUpFromViewController = self;
+	BOOL isLandscape = UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation]);
 	
-	if(self.view.bounds.size.height == [UIScreen mainScreen].bounds.size.height) {
+	if((self.view.bounds.size.height == [UIScreen mainScreen].bounds.size.height && !isLandscape) || (self.view.bounds.size.height == [UIScreen mainScreen].bounds.size.width && isLandscape)) {
 		if(![viewController wantsFullScreenLayout]) {
+			
 			CGRect frame = self.view.bounds;
-			frame.origin.y = [UIApplication sharedApplication].statusBarFrame.size.height;
+			if(isLandscape) {
+				frame.origin.y = [UIApplication sharedApplication].statusBarFrame.size.width;
+			} else {
+				frame.origin.y = [UIApplication sharedApplication].statusBarFrame.size.height;
+			}
+			
 			frame.size.height -= frame.origin.y;
 			viewController.view.frame = frame;
 		} else {
@@ -44,6 +51,7 @@
 	} else {
 		viewController.view.frame = self.view.bounds;
 	}
+	
 	viewController.view.alpha = 0.0f;
 	
 	[self.view addSubview:viewController.view];

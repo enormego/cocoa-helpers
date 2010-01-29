@@ -35,6 +35,8 @@
 
 
 + (NSString*)executeSynchronousTaskAtLaunchPath:(NSString*)launchPath withArguments:(NSArray*)arguments {
+	if(launchPath.length == 0) return nil;
+	
 	NSTask* task = [[NSTask alloc] init];
 	
 	[task setLaunchPath:launchPath];
@@ -44,8 +46,6 @@
 	NSFileHandle* outputHandle = [[task standardOutput] fileHandleForReading];
 	
 	[task launch];
-	
-	[task waitUntilExit];
 	
 	NSData* outputData = [outputHandle readDataToEndOfFile];
 	
