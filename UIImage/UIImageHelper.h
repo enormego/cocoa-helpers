@@ -71,6 +71,16 @@
  */
 - (UIImage*)aspectScaleToSize:(CGSize)size;
 
+/*
+ * Masks the context with the image, then fills with the color
+ */
+- (void)drawInRect:(CGRect)rect withAlphaMaskColor:(UIColor*)aColor;
+
+/*
+ * Masks the context with the image, then fills with the gradient (two colors in an array)
+ */
+- (void)drawInRect:(CGRect)rect withAlphaMaskGradient:(NSArray*)colors;
+
 
 @end
 #endif
