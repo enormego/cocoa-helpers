@@ -95,14 +95,16 @@ CGFloat degreesToRadiens(CGFloat degrees){
 	
 	[self drawInRect:CGRectMake(borderSize, borderSize, newWidth, newHeight)];
 	
-	UIImage* scaledImage = UIGraphicsGetImageFromCurrentImageContext();
-	UIGraphicsEndImageContext();
-	
 	if (aColor) {
 		[aColor setStroke];
 		CGContextSetLineWidth(ctx, borderSize);
 		CGContextStrokeRect(ctx, imageRect);
 	}
+	
+	UIImage* scaledImage = UIGraphicsGetImageFromCurrentImageContext();
+	UIGraphicsEndImageContext();
+	
+
 	
 	//  if shadow property is set, redraw image with a shadow
 	if (aBlurRadius > 0.0f) {
@@ -156,6 +158,61 @@ CGFloat degreesToRadiens(CGFloat degrees){
 	return scaledImage;	
 }
 
+- (void)drawInRect:(CGRect)rect withAlphaMaskColor:(UIColor*)aColor{
+	
+	CGContextRef context = UIGraphicsGetCurrentContext();
+	
+	CGContextSaveGState(context);
+	
+	CGContextTranslateCTM(context, 0.0, rect.size.height);
+	CGContextScaleCTM(context, 1.0, -1.0);
+	
+	rect.origin.y = rect.origin.y * -1;
+	const CGFloat *color = CGColorGetComponents(aColor.CGColor);
+	CGContextClipToMask(context, rect, self.CGImage);
+	CGContextSetRGBFillColor(context, color[0], color[1], color[2], color[3]);
+	CGContextFillRect(context, rect);
+	
+	CGContextRestoreGState(context);
+}
+
+
+- (void)drawInRect:(CGRect)rect withAlphaMaskGradient:(NSArray*)colors{
+	
+	NSAssert([colors count]==2, @"an array containing two UIColor variables must be passed to drawInRect:withAlphaMaskGradient:");
+	
+	CGContextRef context = UIGraphicsGetCurrentContext();
+	
+	CGContextSaveGState(context);
+	
+	CGContextTranslateCTM(context, 0.0, rect.size.height);
+	CGContextScaleCTM(context, 1.0, -1.0);
+	
+	rect.origin.y = rect.origin.y * -1;
+	
+	CGContextClipToMask(context, rect, self.CGImage);
+	
+	const CGFloat *top = CGColorGetComponents(((UIColor*)[colors objectAtIndex:0]).CGColor);
+	const CGFloat *bottom = CGColorGetComponents(((UIColor*)[colors objectAtIndex:1]).CGColor);
+	
+	CGColorSpaceRef _rgb = CGColorSpaceCreateDeviceRGB();
+	size_t _numLocations = 2;
+	CGFloat _locations[2] = { 0.0, 1.0 };
+	CGFloat _colors[8] = { top[0], top[1], top[2], top[3], bottom[0], bottom[1], bottom[2], bottom[3] };
+	CGGradientRef gradient = CGGradientCreateWithColorComponents(_rgb, _colors, _locations, _numLocations);
+	CGColorSpaceRelease(_rgb);
+	
+	CGPoint start = CGPointMake(CGRectGetMidX(rect), rect.origin.y);
+	CGPoint end = CGPointMake(CGRectGetMidX(rect), rect.size.height);
+	
+	CGContextClipToRect(context, rect);
+	CGContextDrawLinearGradient(context, gradient, start, end, kCGGradientDrawsBeforeStartLocation | kCGGradientDrawsAfterEndLocation);
+	
+	CGGradientRelease(gradient);
+	
+	CGContextRestoreGState(context);
+	
+}
 
 @end
 #endif
