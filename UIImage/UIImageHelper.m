@@ -70,12 +70,13 @@ CGFloat degreesToRadiens(CGFloat degrees){
 	CGFloat newWidth = imageSize.width   / scaleFactor;
 	CGFloat newHeight = imageSize.height / scaleFactor;
 	
-	CGRect imageRect = CGRectMake(0.0f, 0.0f, (newWidth + floorf((borderSize*2.0))), (newHeight + floorf((borderSize*2.0))));
+	CGRect imageRect = CGRectMake(borderSize, borderSize, newWidth, newHeight);
 	
-	UIGraphicsBeginImageContext(CGSizeMake(imageRect.size.width, imageRect.size.height));
+	UIGraphicsBeginImageContext(CGSizeMake(newWidth + (borderSize*2), newHeight + (borderSize*2)));
 	
 	CGContextRef imageContext = UIGraphicsGetCurrentContext();
-	
+	CGContextSaveGState(imageContext);
+	CGPathRef path = NULL;
 	if (aRadius > 0.0f) {
 		
 		CGFloat radius;	
@@ -89,29 +90,48 @@ CGFloat degreesToRadiens(CGFloat degrees){
 		CGContextAddArcToPoint(imageContext, x0, y1, x0, y0, radius);
 		CGContextAddArcToPoint(imageContext, x0, y0, x1, y0, radius);
 		CGContextClosePath(imageContext);
+		path = CGContextCopyPath(imageContext);
 		CGContextClip(imageContext);
 		
-	}
+	} 
 	
+	[self drawInRect:imageRect];	
+	CGContextRestoreGState(imageContext);
 	
-	if (aColor) {
-		[aColor setStroke];
+	if (borderSize > 0.0f) {
+		
 		CGContextSetLineWidth(imageContext, borderSize);
-		CGContextStrokeRect(imageContext, imageRect);
+		[aColor != nil ? aColor : [UIColor blackColor] setStroke];
+		
+		if(path == NULL){
+			
+			CGContextStrokeRect(imageContext, imageRect);
+			
+		} else {
+			
+			CGContextAddPath(imageContext, path);
+			CGContextStrokePath(imageContext);
+			
+		}
 	}
 	
-	[self drawInRect:CGRectMake(borderSize, borderSize, newWidth, newHeight)];
-
-	UIImage* scaledImage = UIGraphicsGetImageFromCurrentImageContext();
+	if(path != NULL){
+		CGPathRelease(path);
+	}
+	
+	UIImage *scaledImage = UIGraphicsGetImageFromCurrentImageContext();
 	UIGraphicsEndImageContext();
 	
-
-	
-	//  if shadow property is set, redraw image with a shadow
 	if (aBlurRadius > 0.0f) {
 		UIGraphicsBeginImageContext(CGSizeMake(scaledImage.size.width + (aBlurRadius*2), scaledImage.size.height + (aBlurRadius*2)));
 		CGContextRef imageShadowContext = UIGraphicsGetCurrentContext();
-		CGContextSetShadowWithColor(imageShadowContext, aOffset, aBlurRadius, aShadowColor.CGColor);
+		
+		if (aShadowColor!=nil) {
+			CGContextSetShadowWithColor(imageShadowContext, aOffset, aBlurRadius, aShadowColor.CGColor);
+		} else {
+			CGContextSetShadow(imageShadowContext, aOffset, aBlurRadius);
+		}
+		
 		[scaledImage drawInRect:CGRectMake(aBlurRadius, aBlurRadius, scaledImage.size.width, scaledImage.size.height)];
 		scaledImage = UIGraphicsGetImageFromCurrentImageContext();
 		UIGraphicsEndImageContext();
