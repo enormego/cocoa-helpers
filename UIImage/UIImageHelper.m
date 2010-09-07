@@ -50,7 +50,16 @@ CGFloat degreesToRadiens(CGFloat degrees){
 
 - (UIImage*)scaleToSize:(CGSize)size {
 	
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 40000
+	if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
+		UIGraphicsBeginImageContextWithOptions(size, NO, [[UIScreen mainScreen] scale]);
+	} else {
+		UIGraphicsBeginImageContext(size);
+	}
+#else
 	UIGraphicsBeginImageContext(size);
+#endif
+	
 	[self drawInRect:CGRectMake(0.0f, 0.0f, size.width, size.height)];
 	UIImage* scaledImage = UIGraphicsGetImageFromCurrentImageContext();
 	UIGraphicsEndImageContext();
@@ -72,11 +81,22 @@ CGFloat degreesToRadiens(CGFloat degrees){
 	
 	CGRect imageRect = CGRectMake(borderSize, borderSize, newWidth, newHeight);
 	
+	
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 40000
+	if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
+		UIGraphicsBeginImageContextWithOptions(CGSizeMake(newWidth + (borderSize*2), newHeight + (borderSize*2)), NO, [[UIScreen mainScreen] scale]);
+	} else {
+		UIGraphicsBeginImageContext(CGSizeMake(newWidth + (borderSize*2), newHeight + (borderSize*2)));
+	}
+#else
 	UIGraphicsBeginImageContext(CGSizeMake(newWidth + (borderSize*2), newHeight + (borderSize*2)));
+#endif
+	
 	
 	CGContextRef imageContext = UIGraphicsGetCurrentContext();
 	CGContextSaveGState(imageContext);
 	CGPathRef path = NULL;
+	
 	if (aRadius > 0.0f) {
 		
 		CGFloat radius;	
@@ -123,7 +143,17 @@ CGFloat degreesToRadiens(CGFloat degrees){
 	UIGraphicsEndImageContext();
 	
 	if (aBlurRadius > 0.0f) {
+		
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 40000
+		if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
+			UIGraphicsBeginImageContextWithOptions(CGSizeMake(scaledImage.size.width + (aBlurRadius*2), scaledImage.size.height + (aBlurRadius*2)), NO, [[UIScreen mainScreen] scale]);
+		} else {
+			UIGraphicsBeginImageContext(CGSizeMake(scaledImage.size.width + (aBlurRadius*2), scaledImage.size.height + (aBlurRadius*2)));
+		}
+#else
 		UIGraphicsBeginImageContext(CGSizeMake(scaledImage.size.width + (aBlurRadius*2), scaledImage.size.height + (aBlurRadius*2)));
+#endif
+		
 		CGContextRef imageShadowContext = UIGraphicsGetCurrentContext();
 		
 		if (aShadowColor!=nil) {
@@ -171,12 +201,37 @@ CGFloat degreesToRadiens(CGFloat degrees){
 	CGFloat leftOffset = (size.width - newWidth) / 2;
 	CGFloat topOffset = (size.height - newHeight) / 2;
 	
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 40000
+	if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
+		UIGraphicsBeginImageContextWithOptions(CGSizeMake(size.width, size.height), NO, [[UIScreen mainScreen] scale]);
+	} else {
+		UIGraphicsBeginImageContext(CGSizeMake(size.width, size.height));
+	}
+#else
 	UIGraphicsBeginImageContext(CGSizeMake(size.width, size.height));
+#endif
+	
 	[self drawInRect:CGRectMake(leftOffset, topOffset, newWidth, newHeight)];
 	UIImage *scaledImage = UIGraphicsGetImageFromCurrentImageContext();
 	UIGraphicsEndImageContext();
 	
 	return scaledImage;	
+}
+
+- (CGSize)aspectScaleSize:(CGFloat)size{
+	
+	CGSize imageSize = CGSizeMake(self.size.width, self.size.height);
+	
+	CGFloat hScaleFactor = imageSize.width / size;
+	CGFloat vScaleFactor = imageSize.height / size;
+	
+	CGFloat scaleFactor = MAX(hScaleFactor, vScaleFactor);
+	
+	CGFloat newWidth = imageSize.width   / scaleFactor;
+	CGFloat newHeight = imageSize.height / scaleFactor;
+	
+	return CGSizeMake(newWidth, newHeight);
+	
 }
 
 - (void)drawInRect:(CGRect)rect withAlphaMaskColor:(UIColor*)aColor{
@@ -196,7 +251,6 @@ CGFloat degreesToRadiens(CGFloat degrees){
 	
 	CGContextRestoreGState(context);
 }
-
 
 - (void)drawInRect:(CGRect)rect withAlphaMaskGradient:(NSArray*)colors{
 	

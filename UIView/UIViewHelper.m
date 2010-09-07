@@ -58,6 +58,12 @@ CGFloat DIWW(CGFloat width, CGFloat baseWidth, CGFloat actualWidth) {
 	return view;
 }
 
+- (void)setDebug:(BOOL)val{
+	
+	self.layer.borderColor = [UIColor colorWithRed:arc4random()%1.0f green:arc4random()%1.0f blue:arc4random()%1.0f alpha:1.0f];
+	self.layer.borderWidth = 1.0f;
+	
+}
 
 @end
 

@@ -44,7 +44,7 @@ CGFloat DIWW(CGFloat width, CGFloat baseWidth, CGFloat actualWidth);
  */
 - (UIView*)superviewWithClass:(Class)svClass; // strict:NO
 - (UIView*)superviewWithClass:(Class)svClass strict:(BOOL)strict;
-
+- (void)setDebug:(BOOL)val;
 @end
 
 #endif
